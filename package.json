@@ -2,9 +2,14 @@
   "name": "wikipedia-interest-analysis",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://github.com/namanica/wikipedia-interest-analysis",
   "type": "module",
   "engines": {
     "node": ">=22"
+  },
+  "imports": {
+    "#lib/*": "./lib/*",
+    "#package.json": "./package.json"
   },
   "scripts": {
     "lint": "eslint . && prettier --check .",

@@ -10,7 +10,10 @@ export default [
     rules: {
       "func-style": ["error", "expression"],
       "prefer-arrow-callback": "error",
-      "no-magic-numbers": ["error", { ignoreArrayIndexes: true }],
+      "no-magic-numbers": [
+        "error",
+        { ignore: [-1, 0, 1], ignoreArrayIndexes: true },
+      ],
       "import/no-cycle": "error",
     },
   },
