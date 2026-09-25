@@ -1,0 +1,21 @@
+{
+  "name": "wikipedia-interest-analysis",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write . && eslint --fix .",
+    "validate:skill": "uvx --from skills-ref==0.1.1 agentskills validate \"$PWD\""
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.11.0",
+    "eslint-plugin-import-x": "^4.17.1",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.9"
+  }
+}
