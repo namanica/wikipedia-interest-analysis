@@ -1,0 +1,49 @@
+{
+  "items": [
+    {
+      "project": "uk.wikipedia",
+      "article": "Астрономія",
+      "granularity": "daily",
+      "timestamp": "2026010100",
+      "access": "all-access",
+      "agent": "user",
+      "views": 12
+    },
+    {
+      "project": "uk.wikipedia",
+      "article": "Астрономія",
+      "granularity": "daily",
+      "timestamp": "2026010200",
+      "access": "all-access",
+      "agent": "user",
+      "views": 14
+    },
+    {
+      "project": "uk.wikipedia",
+      "article": "Астрономія",
+      "granularity": "daily",
+      "timestamp": "2026010300",
+      "access": "all-access",
+      "agent": "user",
+      "views": 9
+    },
+    {
+      "project": "uk.wikipedia",
+      "article": "Астрономія",
+      "granularity": "daily",
+      "timestamp": "2026010400",
+      "access": "all-access",
+      "agent": "user",
+      "views": 11
+    },
+    {
+      "project": "uk.wikipedia",
+      "article": "Астрономія",
+      "granularity": "daily",
+      "timestamp": "2026010500",
+      "access": "all-access",
+      "agent": "user",
+      "views": 16
+    }
+  ]
+}

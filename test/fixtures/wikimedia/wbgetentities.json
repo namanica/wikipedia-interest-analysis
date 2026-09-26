@@ -1,0 +1,33 @@
+{
+  "entities": {
+    "Q333": {
+      "type": "item",
+      "id": "Q333",
+      "labels": {
+        "en": {
+          "language": "en",
+          "value": "astronomy"
+        }
+      },
+      "descriptions": {
+        "en": {
+          "language": "en",
+          "value": "natural science studying celestial objects and phenomena in the cosmos"
+        }
+      },
+      "sitelinks": {
+        "plwiki": {
+          "site": "plwiki",
+          "title": "Astronomia",
+          "badges": ["Q17437798"]
+        },
+        "ukwiki": {
+          "site": "ukwiki",
+          "title": "Астрономія",
+          "badges": []
+        }
+      }
+    }
+  },
+  "success": 1
+}

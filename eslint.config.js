@@ -17,4 +17,8 @@ export default [
       "import/no-cycle": "error",
     },
   },
+  {
+    files: ["test/**/*.js"],
+    rules: { "no-magic-numbers": "off" },
+  },
 ];
