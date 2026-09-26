@@ -1,5 +1,6 @@
 import { runScript, parseCli, printResult } from "#lib/utils/index.js";
 import { fetchPageviews } from "#lib/pipeline/index.js";
+import { CACHE_DIR_ENV } from "#lib/cache/index.js";
 
 const USAGE = `Fetch Wikipedia pageviews for articles or whole language editions.
 
@@ -13,6 +14,9 @@ Options:
   --end <YYYY-MM-DD>         last day, default: yesterday (UTC)
   --granularity <value>      daily (default) or monthly; monthly also returns the values
   -h, --help                 show this help
+
+Environment:
+  ${CACHE_DIR_ENV}   cache directory, default: the OS user cache folder
 `;
 
 const OPTIONS = {
