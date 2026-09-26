@@ -10,7 +10,8 @@ Usage:
 Options:
   --article <lang>:<title>   article to fetch, repeatable
   --total <lang>             pageviews of the whole language edition, repeatable
-  --start <YYYY-MM-DD>       first day, default: 3 years before --end
+  --years <n>                period length in years, default: 3
+  --start <YYYY-MM-DD>       first day, instead of --years
   --end <YYYY-MM-DD>         last day, default: yesterday (UTC)
   --granularity <value>      daily (default) or monthly; monthly also returns the values
   -h, --help                 show this help
@@ -22,19 +23,21 @@ Environment:
 const OPTIONS = {
   article: { type: "string", multiple: true },
   total: { type: "string", multiple: true },
+  years: { type: "string" },
   start: { type: "string" },
   end: { type: "string" },
   granularity: { type: "string" },
 };
 
 runScript(async () => {
-  const { article, total, start, end, granularity } = parseCli({
+  const { article, total, years, start, end, granularity } = parseCli({
     options: OPTIONS,
     usage: USAGE,
   });
   const result = await fetchPageviews({
     articles: article,
     totals: total,
+    years,
     start,
     end,
     granularity,
