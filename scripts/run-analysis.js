@@ -20,6 +20,7 @@ Options:
   --keep-spikes              do not remove one-day spikes before measuring the trend
   --min-monthly-views <n>    "promising" needs at least this, default: ${PROMISING_CRITERIA.MIN_MONTHLY_VIEWS}
   --min-growth <pct>         "promising" needs at least this growth, default: ${PROMISING_CRITERIA.MIN_GROWTH_PCT}
+  --chart                    also save a PNG/SVG chart into the run folder
   --confirm                  allow a large number of requests (after asking the user)
   --out <dir>                where to save runs, default: ./${OUTPUT_DIR}
   -h, --help                 show this help
@@ -37,6 +38,7 @@ const OPTIONS = {
   "keep-spikes": { type: "boolean" },
   "min-monthly-views": { type: "string" },
   "min-growth": { type: "string" },
+  chart: { type: "boolean" },
   confirm: { type: "boolean" },
   out: { type: "string" },
 };
@@ -57,6 +59,7 @@ runScript(async () => {
     keepSpikes: values["keep-spikes"],
     minMonthlyViews: toNumber(values["min-monthly-views"]),
     minGrowthPct: toNumber(values["min-growth"]),
+    chart: values.chart,
     confirm: values.confirm,
     out: values.out,
   });
