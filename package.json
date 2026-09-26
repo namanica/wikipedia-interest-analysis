@@ -22,5 +22,12 @@
     "eslint-plugin-import-x": "^4.17.1",
     "globals": "^17.12.0",
     "prettier": "^3.9.9"
+  },
+  "dependencies": {
+    "@resvg/resvg-wasm": "^2.6.2",
+    "pdfkit": "^0.20.2",
+    "svg-to-pdfkit": "^0.1.8",
+    "vega": "^6.4.0",
+    "vega-lite": "^6.4.3"
   }
 }
