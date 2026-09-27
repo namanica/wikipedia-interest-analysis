@@ -71,3 +71,25 @@ test("limitations list the general ones plus one sentence per flag present", () 
   assert.deepEqual(Object.keys(limitations), ["general", "very_low_volume"]);
   assert.match(limitations.very_low_volume, /Fewer than 50 views/);
 });
+
+test("highlights name the comparison facts so the agent does not compute them", () => {
+  const withTrend = (lang, trendPct, trend, confidence, views) => ({
+    ...result(lang, trendPct, confidence, views),
+    trend,
+  });
+  const { highlights } = rankResults([
+    withTrend("en", -21.7, "declining", "high", 70000),
+    withTrend("es", -28.9, "declining", "high", 18000),
+    withTrend("nl", -11.8, "declining", "high", 1900),
+    withTrend("pt", 3.6, "no_clear_trend", "medium", 8000),
+    withTrend("sl", 40, "growing", "low", 10),
+  ]);
+
+  assert.deepEqual(highlights, {
+    largest_audience: "en",
+    fastest_decline: "es",
+    slowest_decline: "nl",
+    no_clear_trend: ["pt"],
+    low_confidence: ["sl"],
+  });
+});

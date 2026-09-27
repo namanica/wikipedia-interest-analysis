@@ -45,6 +45,7 @@ test("steady seasonal growth: growing, high confidence, no flags", () => {
   assert.equal(result.months, 36);
   assert.ok(result.yoy_growth_pct > 15 && result.yoy_growth_pct < 20);
   assert.ok(result.trend_pct_per_year > 15);
+  assert.equal(result.p_value, "<0.001");
   assert.equal(chart.points.length, 36);
   assert.equal(chart.trend.length, 2);
 });

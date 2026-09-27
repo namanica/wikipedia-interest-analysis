@@ -14,6 +14,9 @@ All numbers below are the defaults in `lib/analysis/constants/`.
   first or last month would look like a drop).
 - Days with no data count as 0 views. Months before the first month with views are
   dropped (the article did not exist yet or had another title).
+- A language without an article about the topic is listed in `missing_langs`. The item's
+  "subclass of" (P279) and "part of" (P361) parents that have an article there are
+  returned as `broader_topics`: a separate, broader topic the user may choose to measure.
 
 ## Metrics
 
@@ -28,6 +31,7 @@ All numbers below are the defaults in `lib/analysis/constants/`.
 | `yoy_views_growth_pct` | the same on raw views with spikes; comparable to pageviews.wmcloud.org                                                                                                                                                      |
 | `index_last_12m`       | average of the last 12 months, where the first 12 months = 100                                                                                                                                                              |
 | `views_per_million`    | normalized value, average of the last 12 months                                                                                                                                                                             |
+| `p_value`              | p-value of the seasonal Mann-Kendall test, rounded to 3 digits; `"<0.001"` below that                                                                                                                                       |
 
 `--raw` switches the analyzed series to raw views, `--keep-spikes` keeps spike days.
 
@@ -56,10 +60,13 @@ All numbers below are the defaults in `lib/analysis/constants/`.
 Confidence: **low** if any flag in the low group, **medium** if any other flag,
 **high** if no flags. Every flag has a ready sentence in `data.limitations`.
 
-## Ranking and "promising"
+## Ranking, highlights and "promising"
 
 With 2+ languages, `data.ranking.order` sorts by `trend_pct_per_year` (highest first),
-with low-confidence results last. A language is `promising` if confidence is not low,
+with low-confidence results last. `data.ranking.highlights` gives ready comparison facts:
+`largest_audience` (most views per month), `fastest_growth` and `fastest_decline` (among
+growing / declining results that are not low confidence), `slowest_decline`,
+`no_clear_trend` and `low_confidence` languages. A language is `promising` if confidence is not low,
 average views per month ≥ `--min-monthly-views` (300) and growth (YoY, or the trend if
 YoY is not available) ≥ `--min-growth` (0%).
 

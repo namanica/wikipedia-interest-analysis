@@ -36,9 +36,10 @@ node <skill>/scripts/run-analysis.js --topic "intermittent fasting" --langs pl,c
 
 Answer:
 
-> Only Czech Wikipedia has an article about intermittent fasting ("Přerušovaný půst");
-> Polish Wikipedia has none linked to this topic, so interest in Polish cannot be
-> measured this way.
+> From September 2024 to August 2026 only Czech Wikipedia has an article about
+> intermittent fasting ("Přerušovaný půst"). Polish Wikipedia has none, so interest in
+> Polish cannot be measured with this topic; I can measure the broader topic "fasting",
+> which has a Polish article.
 >
 > | Language | Views/month | Trend/yr | YoY    | Confidence |
 > | -------- | ----------- | -------- | ------ | ---------- |
@@ -65,7 +66,8 @@ Answer:
 > German first (−17% a year, but only 102 views a month, medium confidence), then
 > English (−29.5%, 8554 views a month, high confidence) and Spanish (−34.5%, 248 views,
 > medium). No language is marked promising. Ukrainian and Polish have no article on this
-> topic.
+> topic. For them I can measure the broader topic "English" (the language itself), but it
+> shows interest in the language, not in learning it.
 >
 > Low view counts in German and Spanish make those percentages unreliable. All
 > Wikipedia traffic fell in 2025–2026, so compare languages with each other rather than
@@ -89,18 +91,22 @@ user asks about speed.
 node <skill>/scripts/render-chart.js --run <run_id>
 ```
 
-Give the PNG path from `files` and one sentence on what it shows.
+Give the full PNG path from `files`, the analysis variant from `summary` and one
+sentence from `data.shows`, with numbers only from the analysis JSON. Do not open the
+image. For SVG, add `--format svg`.
 
 ## Report: "Prepare a report for the team."
 
 ```sh
 node <skill>/scripts/build-report.js --run <run_id> --locale uk \
   --question "Чи зростає інтерес до астрономії в українській Вікіпедії?" \
-  --summary "Інтерес до астрономії в українській Вікіпедії спадає: −46% рік до року з поправкою на загальний трафік. Довіра висока." \
+  --summary "З вересня 2023 по серпень 2026 інтерес до астрономії в українській Вікіпедії спадає: −43,9% на рік з поправкою на загальний трафік. Довіра висока." \
   --next "Перевірити пов'язані теми та пошукові тренди перед запуском курсу."
 ```
 
-Reply with the PDF path and the 1–2 sentence conclusion.
+Reply with the full PDF path from `files`, the analysis variant and the 1–2 sentence
+conclusion. Reports are PDF only; if the user asks for Word or slides, say so and offer
+the PDF.
 
 ## Low confidence
 

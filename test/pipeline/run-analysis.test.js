@@ -59,8 +59,10 @@ test("resolveTopic reuses the cache and fetches titles only for new languages", 
 
   assert.equal(first.networkRequests, 2);
   assert.equal(again.networkRequests, 0);
-  assert.equal(withSk.networkRequests, 1);
-  assert.match(wikimedia.calls.at(-1), /sitefilter=skwiki&|sitefilter=skwiki$/);
+  assert.equal(withSk.networkRequests, 2);
+  assert.ok(
+    wikimedia.calls.some((call) => /sitefilter=skwiki(&|$)/.test(call)),
+  );
   assert.deepEqual(
     withSk.data.topic.articles.map(({ lang, status }) => `${lang}:${status}`),
     ["uk:found", "pl:found", "sk:missing"],
@@ -77,7 +79,7 @@ test("one command: topic -> articles -> analysis -> saved run with ranking", asy
   });
   const manifest = JSON.parse(await readFile(result.files[0], "utf8"));
 
-  assert.equal(result.networkRequests, 2 + 4);
+  assert.equal(result.networkRequests, 2 + 1 + 4);
   assert.deepEqual(result.data.topic.missing_langs, ["sk"]);
   assert.equal(result.data.results.length, 2);
   assert.equal(result.data.ranking.order.length, 2);
@@ -194,4 +196,95 @@ test("an over-long summary is refused before the PDF is built", async () => {
     }),
     /--summary is 701 characters/,
   );
+});
+
+test("a missing language gets a broader topic that has an article there", async () => {
+  const { options } = await setup();
+  const fake = createFakeWikimedia({
+    article: () => 100,
+    total: () => 1_000_000,
+    entities: createFakeWikidata({
+      candidates: CANDIDATES,
+      titles: TITLES,
+      parents: { Q333: ["Q7991"] },
+      broader: {
+        Q7991: {
+          label: "natural science",
+          description: "branch of science",
+          titles: { sk: "Prírodné vedy" },
+        },
+      },
+    }),
+  });
+  const result = await runAnalysis({
+    ...options,
+    fetch: fake.fetch,
+    topic: "astronomy",
+    langs: "uk,sk",
+  });
+
+  assert.deepEqual(result.data.topic.broader_topics, [
+    {
+      qid: "Q7991",
+      label: "natural science",
+      description: "branch of science",
+      langs: ["sk"],
+    },
+  ]);
+  assert.ok(result.hints.some((hint) => hint.includes("--qid Q7991")));
+  assert.equal(result.data.alternatives[0].description, "journal");
+});
+
+test("chart format follows the request and unsupported formats are refused", async () => {
+  const { options } = await setup();
+
+  await runAnalysis({ ...options, topic: "astronomy", langs: "uk" });
+
+  const svg = await renderChart({
+    run: "latest",
+    out: options.out,
+    format: "SVG",
+  });
+  const content = await readFile(svg.files[0], "utf8");
+
+  assert.match(svg.files[0], /chart\.svg$/);
+  assert.match(svg.summary, /normalized views, spikes removed/);
+  assert.match(content, /^<svg/);
+  await assert.rejects(
+    renderChart({ run: "latest", out: options.out, format: "jpg" }),
+    (error) =>
+      error instanceof SkillError && /only as png or svg/.test(error.hint),
+  );
+});
+
+test("twelve languages fit on one PDF page with a short summary", async () => {
+  const { options } = await setup();
+  const langs = "en,de,fr,es,it,pl,uk,cs,sk,pt,nl,sv";
+  const titles = Object.fromEntries(
+    langs.split(",").map((lang) => [lang, `Article ${lang}`]),
+  );
+  const fake = createFakeWikimedia({
+    article: (date) => 5000 - 40 * monthIndexOf(date, 2023),
+    total: () => 1_000_000,
+    entities: createFakeWikidata({ candidates: CANDIDATES, titles }),
+  });
+  const run = await runAnalysis({
+    ...options,
+    fetch: fake.fetch,
+    topic: "astronomy",
+    langs,
+    confirm: true,
+  });
+  const report = await buildReport({
+    run: run.data.run_id,
+    out: options.out,
+    locale: "uk",
+    summary:
+      "Інтерес падає в усіх 12 мовних розділах за три роки. Довіра висока. Варто порівняти з пов'язаними темами.",
+  });
+  const pdf = await readFile(report.files[0]);
+  const pages = pdf.toString("latin1").match(/\/Type \/Page\b/g);
+
+  assert.equal(pages.length, 1);
+  assert.ok(Buffer.byteLength(JSON.stringify(run)) < 4096);
 });

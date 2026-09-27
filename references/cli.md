@@ -27,7 +27,7 @@ Options:
   --keep-spikes              do not remove one-day spikes before measuring the trend
   --min-monthly-views <n>    "promising" needs at least this, default: 300
   --min-growth <pct>         "promising" needs at least this growth, default: 0
-  --chart                    also save a PNG/SVG chart into the run folder
+  --chart                    also save a PNG chart into the run folder
   --confirm                  allow a large number of requests (after asking the user)
   --out <dir>                where to save runs, default: ./wikipedia-interest-analysis-output
   -h, --help                 show this help
@@ -91,15 +91,16 @@ Environment:
 ## render-chart.js
 
 ```text
-Render a chart (PNG + SVG) for a saved run of run-analysis.js, without new downloads.
+Render a chart (PNG by default, or SVG) for a saved run of run-analysis.js, without new downloads.
 One language: monthly values with the trend line and spike days.
 Several languages: index lines (first 12 months = 100).
 
 Usage:
-  node scripts/render-chart.js --run <run_id|latest> [--out <dir>]
+  node scripts/render-chart.js --run <run_id|latest> [--format png|svg] [--out <dir>]
 
 Options:
   --run <id>       run_id from run-analysis.js output, or "latest" (default)
+  --format <fmt>   png (default) or svg, only if the user asks for SVG
   --out <dir>      folder with runs, default: ./wikipedia-interest-analysis-output
   -h, --help       show this help
 ```
